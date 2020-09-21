@@ -1,16 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import MyName from './MyName';
-
 import * as serviceWorker from './serviceWorker';
+import ClassComponents from './ClassComponents';
+import FuncComponent from './FuncComponents';
+import Students from './Students';
+
+const students = [
+  { name: 'Nguyen van Cong' },
+  { name: 'Nguyen van cuong' },
+]
+
+const hshuhong = 'Nguyen thi Nguyet';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-    {/* <MyName /> */}
-  </React.StrictMode>,
+  <div>
+    {/* <Students students={students} hshuhong={hshuhong} /> */}
+    <ClassComponents />
+
+  </div>,
   document.getElementById('root')
 );
 
