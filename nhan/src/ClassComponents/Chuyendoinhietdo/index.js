@@ -12,6 +12,7 @@ class Chuyendoinhietdo extends React.Component {
         const value = e.target.value;
         this.setState({ nhietdo: value });
     }
+    
     render() {
         const { nhietdo } = this.state;
         return (
