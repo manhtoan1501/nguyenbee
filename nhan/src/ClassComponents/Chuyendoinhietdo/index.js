@@ -16,9 +16,9 @@ class Chuyendoinhietdo extends React.Component {
         const { nhietdo } = this.state;
         return (
             <div>
-                <h1>Nhiet do C</h1>
+                <h1>Chuyen doi nhiet do C => F</h1>
                 <input value={Number(nhietdo)} onChange={this.onChange} />
-                <h1>Nhiet do F</h1>
+                <h1>Chuyen doi nhiet do F => C</h1>
                 <input value={Number(nhietdo) + 32} onChange={this.onChange} />
             </div>
         );
