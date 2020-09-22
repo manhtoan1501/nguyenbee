@@ -91,6 +91,7 @@ class ClassName extends React.Component {
             alignItems: 'center',
             textAlign: 'center'
         }
+        const xx = 333;
         return (
             <div style={{ textAlign: 'center', margin: '0 auto' }}>
                 <center>
@@ -104,6 +105,7 @@ class ClassName extends React.Component {
                                 Chon SV
                             </button>
                     }
+
                     {
                         changeDel ?
                             <button onClick={() => this.onDelAll(false)} style={styleButton}>
@@ -113,9 +115,7 @@ class ClassName extends React.Component {
                                 Xoa SV
                             </button>
                     }
-
                     {students.map((item, index) => {
-                        console.log('item', item);
                         return (
                             <div
                                 key={index}
@@ -145,7 +145,7 @@ class ClassName extends React.Component {
                                     </button>
                                 </div>
                                 {
-                                    changeDel ?
+                                    changeDel || changeStudent ?
                                         <div style={{ marginTop: -22, marginLeft: -30 }}>
                                             <input type="checkbox" onClick={() => this.onClickDel(index)} />
                                         </div> : null
