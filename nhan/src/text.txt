@@ -1,0 +1,6 @@
+git add --all
+git commit -a, git commit -n
+
+> comment => Ctrl + x => Y => Enter
+
+git push origin master
