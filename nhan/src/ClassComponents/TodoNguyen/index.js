@@ -1,13 +1,26 @@
 import React from 'react';
 
+const button_1 = {
+    padding: '4px 12px',
+    boderRadius: 8,
+    backgroundColor: '#2196f3',
+    color: 'white',
+    margin: '0px 2px',
+    boder: '2px solid white'
+}
 class TodoNguyen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            students: [],
+            students: [
+                { name: 'Nguyen van Tí 0', status: true },
+                { name: 'Nguyen van Tí 1', status: true },
+                { name: 'Nguyen van Tí 2', status: true },
+            ],
             valueInput: '',
             valueEdit: '',
             indexEdit: null,
+            statusComplete: 'all'
         };
     }
 
@@ -50,6 +63,24 @@ class TodoNguyen extends React.Component {
         this.setState({ valueEdit: valueEdit, valueInput: valueEdit, indexEdit: index })
     }
 
+    onClickDel(status, index) {
+        const { students } = this.state;
+        students[index].status = !status;
+        this.setState({ students });
+    }
+
+    onAll = () => {
+        this.setState({ statusComplete: 'all' })
+    }
+
+    onActive = () => {
+        this.setState({ statusComplete: 'active' })
+    }
+
+    onComplete = () => {
+
+        this.setState({ statusComplete: 'complete' })
+    }
     renderInput() {
         const { valueInput } = this.state;
         return (
@@ -78,7 +109,7 @@ class TodoNguyen extends React.Component {
                 style={{
                     color: 'white',
                     fontSize: 16,
-                    backgroundColor: '#43a047',
+                    backgroundColor: status ? '#43a047' : '#aaa',
                     maxWidth: 400,
                     height: 25,
                     padding: 4,
@@ -100,14 +131,40 @@ class TodoNguyen extends React.Component {
                         Sửa
                     </button>
                 </div>
+                <div style={{ marginTop: -22, marginLeft: -30 }}>
+                    <input
+                        type='checkbox'
+                        checked={!status}
+                        onClick={() => this.onClickDel(status, index)}
+                    />
+                </div>
             </div>
         );
 
     }
 
+    renderStatusComplete(students, checkComplete) {
+        return (
+            <div style={{ padding: 10, boder: 'solid 2px #aaa', width: 400 }}>
+                <p style={{ display: 'inline', padding: 8 }}>
+                    {students.length} items
+                </p>
+                <button style={button_1} onClick={this.onAll}>All</button>
+                <button style={button_1} onClick={this.onActive}>Active</button>
+                <button style={button_1} onClick={this.onComplete}>Complete</button>
+                {checkComplete &&
+                    <button style={button_1}>
+                        ClearComplete
+                    </button>
+                }
+            </div >
+        );
+    }
+
     render() {
         const { valueInput, students, valueEdit } = this.state;
         // console.log(">>>>>> ", valueInput, ' + ', valueEdit);
+        let checkComplete = false;
         console.log(' nguyen SV', students);
         return (
             <div>
@@ -117,8 +174,29 @@ class TodoNguyen extends React.Component {
                     <br />
                     {students.map((item, index) => {
                         const { status } = item;
-                        return this.renderStudent(item, status, index)
+                        const { statusComplete } = this.state;
+                        // return this.renderStudent(item, status, index)
+                        if (!status) {
+                            checkComplete = true;
+                        }
+
+                        if (statusComplete === 'all') {
+
+                            return this.renderStudent(item, status, index)
+                        }
+
+                        else if (statusComplete === 'complete' && !status) {
+
+                            return this.renderStudent(item, status, index)
+                        }
+
+                        else if (statusComplete === 'active' && status) {
+
+                            return this.renderStudent(item, status, index)
+                        }
                     })}
+
+                    {this.renderStatusComplete(students, checkComplete)}
                 </center>
             </div >
         );

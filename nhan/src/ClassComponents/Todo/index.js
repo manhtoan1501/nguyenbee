@@ -150,6 +150,28 @@ class ClassName extends React.Component {
         );
     }
 
+    onClearComplete = () => {
+        // students: [
+        //     { name: 'Nguyen van teo 0', status: true },
+        //     { name: 'Nguyen van teo 1', status: true },
+        //     { name: 'Nguyen van teo 2', status: true },
+        //     { name: 'Nguyen van teo 3', status: true },
+        //     { name: 'Nguyen van teo 4', status: true, code },
+        //     // { name: 'Nguyen van teo 5' },
+
+        // ],
+        const _students = this.state.students;
+        const keepStudents = [];
+        _students.map((item, index) => {
+            const { status } = item;
+            if (status) {
+                keepStudents.push(item);
+            }
+        })
+
+        this.setState({ students: keepStudents });
+    }
+
     renderStatusComplete(students, checkComplete) {
         return (
             <div style={{ padding: 10, border: 'solid 2px #aaa', width: 400 }} >
@@ -166,11 +188,10 @@ class ClassName extends React.Component {
                     Complete
                 </button>
                 {checkComplete &&
-                    <button style={button_1}>
+                    <button style={button_1} onClick={this.onClearComplete} >
                         Clear Complete
                     </button>
                 }
-
             </div>
         );
     }
@@ -196,8 +217,8 @@ class ClassName extends React.Component {
     }
 
     render() {
+
         const { students, valueInput, changeStudent, changeDel, valueEdit } = this.state;
-        console.log('students', students);
         let checkComplete = false;
         return (
             <div style={{ textAlign: 'center', margin: '0 auto' }}>
@@ -209,19 +230,19 @@ class ClassName extends React.Component {
                         {students.map((item, index) => {
                             const { status } = item;
                             const { statusComplete } = this.state;
-                            return this.renderStudent(item, status, index)
-                            // if (!status) {
-                            //     checkComplete = true;
-                            // }
-                            // if (statusComplete === 'all') {
-                            //     return this.renderStudent(item, status, index)
-                            // } else if (statusComplete === 'complete' && !status) {
-                            //     return this.renderStudent(item, status, index)
+                            // this.renderStudent(item, status, index)
+                            if (!status) {
+                                checkComplete = true;
+                            }
+                            if (statusComplete === 'all') {
+                                return this.renderStudent(item, status, index)
+                            } else if (statusComplete === 'complete' && !status) {
+                                return this.renderStudent(item, status, index)
 
-                            // } else if (statusComplete === 'active' && status) {
+                            } else if (statusComplete === 'active' && status) {
 
-                            //     return this.renderStudent(item, status, index)
-                            // }
+                                return this.renderStudent(item, status, index)
+                            }
                         })}
                     </div>
                     {this.renderStatusComplete(students, checkComplete)}
