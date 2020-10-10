@@ -8,6 +8,7 @@ const button_1 = {
     margin: '0px 2px',
     boder: '2px solid white'
 }
+
 class TodoNguyen extends React.Component {
     constructor(props) {
         super(props);
@@ -25,7 +26,6 @@ class TodoNguyen extends React.Component {
     }
 
     addStudents = () => {
-
         const { valueInput, students, valueEdit, indexEdit } = this.state;
         if (valueInput !== '' && !valueEdit) { // Them moi SV
             console.log('114  114 THem SV');
@@ -41,7 +41,6 @@ class TodoNguyen extends React.Component {
     onKeyDown = (element) => {
         const { keyCode } = element;
         if (keyCode == 13) {
-
             this.addStudents();
         }
     }
@@ -78,9 +77,22 @@ class TodoNguyen extends React.Component {
     }
 
     onComplete = () => {
-
         this.setState({ statusComplete: 'complete' })
     }
+
+    onClearComplete = () => {
+        const { students } = this.state;
+        const keepStudents = [];
+        students.map((item, index) => {
+            const { status } = item;
+            if (status) {
+                keepStudents.push(item);
+            }
+            this.setState({ students: keepStudents });
+        })
+
+    }
+
     renderInput() {
         const { valueInput } = this.state;
         return (
@@ -102,7 +114,6 @@ class TodoNguyen extends React.Component {
     }
 
     renderStudent(item, status, index) {
-
         return (
             <div
                 key={index}
@@ -153,7 +164,7 @@ class TodoNguyen extends React.Component {
                 <button style={button_1} onClick={this.onActive}>Active</button>
                 <button style={button_1} onClick={this.onComplete}>Complete</button>
                 {checkComplete &&
-                    <button style={button_1}>
+                    <button style={button_1} onClick={this.onClearComplete}>
                         ClearComplete
                     </button>
                 }
@@ -163,13 +174,11 @@ class TodoNguyen extends React.Component {
 
     render() {
         const { valueInput, students, valueEdit } = this.state;
-        // console.log(">>>>>> ", valueInput, ' + ', valueEdit);
         let checkComplete = false;
-        console.log(' nguyen SV', students);
         return (
             <div>
                 <center>
-                    <h1>So luong SV: {students.length}</h1>
+                    {/* <h1>So luong SV: {students.length}</h1> */}
                     {this.renderInput()}
                     <br />
                     {students.map((item, index) => {
@@ -181,17 +190,14 @@ class TodoNguyen extends React.Component {
                         }
 
                         if (statusComplete === 'all') {
-
                             return this.renderStudent(item, status, index)
                         }
 
                         else if (statusComplete === 'complete' && !status) {
-
                             return this.renderStudent(item, status, index)
                         }
 
                         else if (statusComplete === 'active' && status) {
-
                             return this.renderStudent(item, status, index)
                         }
                     })}
