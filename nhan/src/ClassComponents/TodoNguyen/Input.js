@@ -5,6 +5,10 @@ class Input extends React.Component {
         super(props);
         this.state = {
             valueInput: '',
+            student: {
+                name: '',
+                status: true,
+            },
         };
     }
 
@@ -13,24 +17,28 @@ class Input extends React.Component {
         let name = '';
         if (student) {
             name = student.name;
+            this.setState({ valueInput: name, student: student });
         }
-        // this.setState({ valueInput: name });
     }
 
     onKeyDown = (element) => {
         const { keyCode } = element;
-        const { valueInput } = this.state;
-        const { getStudent, onEditStudent, student } = this.props;
+        const { valueInput, student } = this.state;
+        const { getStudent, onEditStudent } = this.props;
         if (keyCode == 13 && valueInput !== '') {
-            const student = { name: valueInput, status: true };
-            getStudent(student);
-            this.setState({ valueInput: '' });
+            const dataStudent = { name: valueInput, status: true };
             const dataEdit = {
                 name: valueInput,
                 status: true,
             };
-            onEditStudent(dataEdit);
-            this.setState({ valueInput: '' });
+            if (!student) {
+                onEditStudent(dataEdit);
+                this.setState({ student: { name: '', status: true } })
+                this.setState({ valueInput: '' });
+            } else {
+                getStudent(dataStudent);
+                this.setState({ valueInput: '' });
+            }
         }
     }
 

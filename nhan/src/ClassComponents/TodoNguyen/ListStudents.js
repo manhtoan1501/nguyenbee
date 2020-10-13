@@ -7,7 +7,6 @@ class ListStudents extends React.Component {
             valueInput: '',
             valueEdit: '',
             indexEdit: null,
-            statusComplete: 'all'
         };
     }
 
@@ -18,39 +17,12 @@ class ListStudents extends React.Component {
 
     editStudent(index) {
         const { getIndexEdit } = this.props;
-        console.log('fdfdfdgggg');
         getIndexEdit(index);
-
     }
 
-    onClickDel(status, index) {
-        // const { students } = this.state;
-        // students[index].status = !status;
-        // this.setState({ students });
-    }
-
-    onAll = () => {
-        this.setState({ statusComplete: 'all' })
-    }
-
-    onActive = () => {
-        this.setState({ statusComplete: 'active' })
-    }
-
-    onComplete = () => {
-        this.setState({ statusComplete: 'complete' })
-    }
-
-    onClearComplete = () => {
-        // const { students } = this.state;
-        // const keepStudents = [];
-        // students.map((item, index) => {
-        //     const { status } = item;
-        //     if (status) {
-        //         keepStudents.push(item);
-        //     }
-        //     this.setState({ students: keepStudents });
-        // })
+    onClick(status, index) {
+        const { getIndexComplete } = this.props;
+        getIndexComplete(status, index);
     }
 
     renderStudent(item, status, index) {
@@ -86,7 +58,7 @@ class ListStudents extends React.Component {
                     <input
                         type='checkbox'
                         checked={!status}
-                        onClick={() => this.onClickDel(status, index)}
+                        onClick={() => this.onClick(status, index)}
                     />
                 </div>
             </div>
@@ -95,8 +67,7 @@ class ListStudents extends React.Component {
     }
 
     render() {
-        const { valueInput, valueEdit } = this.state;
-        const { students } = this.props;
+        const { students, statusView } = this.props;
         let checkComplete = false;
         if (!students.length) {
             return null;
@@ -106,20 +77,19 @@ class ListStudents extends React.Component {
             <center>
                 {students.map((item, index) => {
                     const { status } = item;
-                    const { statusComplete } = this.state;
                     if (!status) {
                         checkComplete = true;
                     }
 
-                    if (statusComplete === 'all') {
+                    if (statusView === 'all') {
                         return this.renderStudent(item, status, index)
                     }
 
-                    else if (statusComplete === 'complete' && !status) {
+                    else if (statusView === 'complete' && !status) {
                         return this.renderStudent(item, status, index)
                     }
 
-                    else if (statusComplete === 'active' && status) {
+                    else if (statusView === 'active' && status) {
                         return this.renderStudent(item, status, index)
                     }
                 })}

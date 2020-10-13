@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './TodoNguyen/Header';
 import Input from './TodoNguyen/Input';
 import ListStudents from './TodoNguyen/ListStudents';
+import Footer from './TodoNguyen/Footer';
 
 class Index extends React.Component {
     constructor(props) {
@@ -12,6 +13,7 @@ class Index extends React.Component {
                 { name: 'Nguyen van teo 2', status: true }
             ],
             indexEdit: null,
+            statusView: 'all',
         }
     }
 
@@ -22,6 +24,10 @@ class Index extends React.Component {
     }
 
     getStudent = (dataStudent) => {
+        this.addStudent(dataStudent);
+    }
+
+    addStudent = (dataStudent) => {
         const { students } = this.state;
         students.push(dataStudent);
         this.setState({ students });
@@ -38,8 +44,34 @@ class Index extends React.Component {
         this.setState({ indexEdit: null });
     }
 
+    getStatusComplete = (statusComplete) => {
+        this.setState({ statusComplete });
+    }
+
+    getIndexComplete = (statusComplete, indexComplete) => {
+        const { students } = this.state;
+        students[indexComplete].status = !statusComplete;
+        this.setState({ students: students });
+    }
+
+    getStatusView = (status) => {
+        this.setState({ statusView: status });
+    }
+
+    onClearStudentsComplete = () => {
+        const { students } = this.state;
+        const keepStudents = [];
+        students.map(item => {
+            const { status } = item;
+            if (status) {
+                keepStudents.push(item);
+            }
+            this.setState({ students: keepStudents });
+        })
+    }
+
     render() {
-        const { students, indexEdit } = this.state;
+        const { students, indexEdit, statusView } = this.state;
         const student = students[indexEdit];
         return (
             <div>
@@ -51,9 +83,19 @@ class Index extends React.Component {
                 />
                 <ListStudents
                     students={students}
+                    statusView={statusView}
+                    getIndexComplete={this.getIndexComplete}
                     callBackdeleteStudent={this.callBackdeleteStudent}
                     getIndexEdit={this.getIndexEdit}
                 />
+                <Footer
+                    numberStudent={students.length}
+                    getStatusComplete={this.getStatusComplete}
+                    getStatusView={this.getStatusView}
+                    statusView={statusView}
+                    onClearStudentsComplete={this.onClearStudentsComplete}
+                />
+
             </div>
         );
     }
